@@ -328,7 +328,7 @@ class nobo:
         else:
             self._thread = None
 
-    def get_or_create_eventloop():
+    def get_or_create_eventloop(self):
         try:
             return asyncio.get_event_loop()
         except RuntimeError as ex:
