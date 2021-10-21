@@ -300,7 +300,7 @@ class nobo:
         :param loop: the asyncio event loop to use
         """
 
-        self._loop = asyncio.get_event_loop() if loop is None else loop
+        self._loop = self.get_or_create_eventloop() if loop is None else loop
         self.serial = serial
         self.ip = ip
         self.discover = discover
@@ -327,6 +327,15 @@ class nobo:
             self._thread.start()
         else:
             self._thread = None
+
+    def get_or_create_eventloop():
+        try:
+            return asyncio.get_event_loop()
+        except RuntimeError as ex:
+            if "There is no current event loop in thread" in str(ex):
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                return asyncio.get_event_loop() 
 
     def register_callback(self, callback=lambda *args, **kwargs: None):
         """
