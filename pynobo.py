@@ -328,6 +328,9 @@ class nobo:
         else:
             self._thread = None
 
+    def wait_socket_receive(self):
+        asyncio.wait({self._socket_receive_task})
+
     def get_or_create_eventloop(self):
         try:
             return asyncio.get_event_loop()
